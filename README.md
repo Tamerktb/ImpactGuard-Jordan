@@ -4,7 +4,7 @@
 Live demo + Executive PDF report included.
 
 ## Business Impact
-- **Example run (varies with data) — see PDF download
+- **Example run (varies with data) — see PDF download**
 - **Detection rate**: 4.5–5.5% (realistic Jordan bank fraud volume)
 - **ROI**: 12x in first year
 - **Time saved**: From 48 hours manual review → under 4 hours with AI
