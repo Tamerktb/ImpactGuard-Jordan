@@ -10,7 +10,7 @@ Live demo + Executive PDF report included.
 - **Time saved**: From 48 hours manual review → under 4 hours with AI
 - Full PDF executive report attached (ready for SOC/Leadership)
 
-**Live Demo**: http://localhost:8501
+**Live Demo**: https://tamerktb-impactguard-jordan-app-gdquxu.streamlit.app
 
 ## Technical Documentation
 **Tech Stack**  
