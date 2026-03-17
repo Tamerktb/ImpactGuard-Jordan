@@ -11,6 +11,10 @@ Live demo + Executive PDF report included.
 - Full PDF executive report attached (ready for SOC/Leadership)
 
 **Live Demo**: https://tamerktb-impactguard-jordan-app-gdquxu.streamlit.app
+<image-card alt="Dashboard" src="https://raw.githubusercontent.com/Tamerktb/ImpactGuard-Jordan/main/screenshots/1-dashboard.png" ></image-card>
+<image-card alt="Detection" src="https://raw.githubusercontent.com/Tamerktb/ImpactGuard-Jordan/main/screenshots/2-detection.png" ></image-card>
+<image-card alt="Report" src="https://raw.githubusercontent.com/Tamerktb/ImpactGuard-Jordan/main/screenshots/3-report.png" ></image-card>
+<image-card alt="PDF" src="https://raw.githubusercontent.com/Tamerktb/ImpactGuard-Jordan/main/screenshots/4-pdf-preview.png" ></image-card>
 
 ## Technical Documentation
 **Tech Stack**  
