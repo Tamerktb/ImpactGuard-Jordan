@@ -26,7 +26,7 @@ Live demo + Executive PDF report included.
 **How to Run (exact steps)**  
 1. open cmd in "ImpactGuard-Jordan-main" directory
    
-3. pip install streamlit matplotlib pandas numpy scikit-learn plotly seaborn pillow joblib fpdf2
+3. pip install -r requirements.txt
    
 5. python -m streamlit run app.py
    
