@@ -1,18 +1,24 @@
 """
 ImpactGuard Jordan - Executive Report Generator
-FIXED: No Unicode bullets (works perfectly with FPDF)
-Shows REAL prevented fraud amount in JOD
+FIXED: Now uses ONLY TRUE frauds caught (no false positives)
+Dynamic savings + Recall printed in PDF
 """
 from fpdf import FPDF
 import pandas as pd
 
 def generate_report():
     df = pd.read_csv('transactions_with_predictions.csv')
-    total_tx = len(df)
-    detected_frauds = df['fraud_score'].sum()
-    prevented_amount = df[df['fraud_score'] == 1]['amount_JOD'].sum()
-    savings_jod = round(prevented_amount * 1.2)  # +20% for investigation costs
     
+    # ←←← NEW HONEST CALCULATIONS ←←←
+    true_prevented = df[(df['fraud_score'] == 1) & (df['is_fraud'] == 1)]['amount_JOD'].sum()
+    caught = ((df['fraud_score'] == 1) & (df['is_fraud'] == 1)).sum()
+    true_frauds = df['is_fraud'].sum()
+    recall = (caught / true_frauds * 100) if true_frauds > 0 else 0
+    savings_jod = round(true_prevented * 1.2)  # +20% investigation costs
+    
+    total_tx = len(df)
+    detected_frauds = df['fraud_score'].sum()  # AI flagged (includes FP - that's fine to show)
+
     pdf = FPDF()
     pdf.add_page()
     
@@ -21,15 +27,17 @@ def generate_report():
     pdf.cell(200, 10, txt="ImpactGuard Jordan - Executive Fraud Report for Aman Bank", ln=1, align='C')
     pdf.ln(15)
     
-    # Key numbers
+    # Key numbers (now honest!)
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, txt=f"Total Transactions Analyzed: {total_tx:,}", ln=1)
     pdf.cell(200, 10, txt=f"AI-Detected Frauds: {detected_frauds} cases", ln=1)
-    pdf.cell(200, 10, txt=f"Prevented Fraud Amount: {prevented_amount:,.0f} JOD", ln=1)
+    pdf.cell(200, 10, txt=f"True Frauds Caught: {caught} cases", ln=1)                    # ← NEW
+    pdf.cell(200, 10, txt=f"Recall: {recall:.1f}%", ln=1)                                 # ← NEW
+    pdf.cell(200, 10, txt=f"Prevented Fraud Amount: {true_prevented:,.0f} JOD", ln=1)
     pdf.cell(200, 10, txt=f"Total Business Savings: {savings_jod:,} JOD", ln=1)
     pdf.ln(10)
     
-    # Business Impact section
+    # Business Impact section (kept realistic)
     pdf.set_font("Arial", 'B', 14)
     pdf.cell(200, 10, txt="Business Impact (Realistic for Jordan Banks)", ln=1)
     pdf.set_font("Arial", size=12)
@@ -44,8 +52,8 @@ def generate_report():
     
     pdf.output("impact_report.pdf")
     
-    print("✅ Executive PDF created: impact_report.pdf")
-    print("   → Perfect for attaching to applications / interviews")
+    print("Executive PDF created: impact_report.pdf")
+    print("   → Now 100% honest numbers (perfect for banks)")
 
 if __name__ == "__main__":
     generate_report()
