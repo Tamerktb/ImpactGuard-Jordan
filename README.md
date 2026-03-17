@@ -24,9 +24,11 @@ Live demo + Executive PDF report included.
 - **Realistic data**: 5,000 transactions with 5% natural fraud rate (online/POS/ATM).
 
 **How to Run (exact steps)**  
-1. pip install streamlit matplotlib pandas numpy scikit-learn plotly seaborn pillow joblib fpdf2
-2. Click buttons in the Streamlit dashboard (Generate → Detect → Report)  
-3. Or run: `python data_generator.py` → `python detection.py` → `streamlit run app.py`
+1.open cmd in "ImpactGuard-Jordan-main" directory
+2. pip install streamlit matplotlib pandas numpy scikit-learn plotly seaborn pillow joblib fpdf2
+3. python -m streamlit run app.py
+4. Click buttons in the Streamlit dashboard (Generate → Detect → Report)  
+5. Or run: `python data_generator.py` → `python detection.py` → `streamlit run app.py`
 
 **Folder Structure**  
 - `transactions.csv` → raw data  
