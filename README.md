@@ -31,4 +31,4 @@ Live demo + Executive PDF report included.
 **Ready for Production** — Any Jordan bank (Aman Bank, Housing Bank, Zain, Orange) can fork and deploy tomorrow.
 
 Built for Cybersecurity / Fraud Analyst / SOC roles in Jordan 🇯🇴  
-Open to opportunities in Amman / Zarqa.
+Open to opportunities in Amman
