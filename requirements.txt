@@ -1,6 +1,5 @@
-streamlit>=1.52.0
-pandas
-scikit-learn
-numpy
-fpdf
-matplotlib
+pandas==2.2.3
+scikit-learn==1.5.2
+numpy==2.1.2
+fpdf==1.7.2
+streamlit==1.40.0
