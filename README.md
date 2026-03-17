@@ -12,7 +12,7 @@ Live demo + Executive PDF report included.
 
 **Live Demo**: http://localhost:8501
 
-## Technical Documentation (Interviewers love this)
+## Technical Documentation
 **Tech Stack**  
 - Python 3.12 | Pandas | scikit-learn (Isolation Forest) | Streamlit | FPDF  
 - **Why Isolation Forest?** Unsupervised — banks don’t have perfect labels.  
