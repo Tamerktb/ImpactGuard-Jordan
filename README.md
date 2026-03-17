@@ -24,7 +24,7 @@ Live demo + Executive PDF report included.
 - **Realistic data**: 5,000 transactions with 5% natural fraud rate (online/POS/ATM).
 
 **How to Run (exact steps)**  
-1. `pip install -r requirements.txt`  or (pip install matplotlib pandas numpy seaborn plotly pillow streamlit)
+1. pip install streamlit matplotlib pandas numpy scikit-learn plotly seaborn pillow joblib fpdf2
 2. Click buttons in the Streamlit dashboard (Generate → Detect → Report)  
 3. Or run: `python data_generator.py` → `python detection.py` → `streamlit run app.py`
 
