@@ -28,7 +28,6 @@ Live demo + Executive PDF report included.
 - `transactions_with_predictions.csv` → AI results  
 - `impact_report.pdf` → executive summary (management-ready)
 
-**Ready for Production** — Any Jordan bank (Aman Bank, Housing Bank, Zain, Orange) can fork and deploy tomorrow.
 
 Built for Cybersecurity / Fraud Analyst / SOC roles in Jordan 🇯🇴  
 Open to opportunities in Amman
