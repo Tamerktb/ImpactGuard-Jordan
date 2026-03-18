@@ -7,31 +7,31 @@ from report_generator import generate_report
 
 st.set_page_config(page_title="ImpactGuard Jordan", layout="wide")
 
-# 🔒 Demo protection
-st.warning("🔒 Demo only - never upload real customer data here")
+st.warning("Demo only - never upload real customer data here")
 
-# Jordan + Arabic UI
-st.title("🔒 ImpactGuard الأردن")
+st.title("ImpactGuard الأردن")
 st.markdown("**بنك عمان - نظام كشف الاحتيال بالذكاء الاصطناعي** | معاملات بالدينار الأردني")
 st.markdown('<p dir="rtl" style="text-align:right">تقرير تنفيذي جاهز للإدارة</p>', unsafe_allow_html=True)
 
-# Session state (no files ever written)
 if 'df' not in st.session_state:
     st.session_state.df = None
 
 uploaded = st.file_uploader("Or upload your own bank CSV (real data - any format)", type="csv")
+
+# 🔥 FIXED: Only load raw file the FIRST time (or if still raw)
 if uploaded:
-    df = pd.read_csv(uploaded)
-    st.session_state.df = df
-    st.success("Real data loaded securely!")
+    if st.session_state.df is None or 'fraud_score' not in st.session_state.df.columns:
+        df_raw = pd.read_csv(uploaded)
+        st.session_state.df = df_raw
+        st.success("Real data loaded securely! (143MB → will be sampled to 5000 rows on detection)")
 
 if st.button("1. Generate 5,000 Fresh Transactions"):
     st.session_state.df = generate_data()
-    st.success("Synthetic data ready! (no files touched)")
+    st.success("Synthetic data ready!")
 
 if st.button("2. Run AI Fraud Detection") and st.session_state.df is not None:
     st.session_state.df = detect_fraud(st.session_state.df)
-    st.success("Detection complete!")
+    st.success("Detection complete! (large files auto-sampled to 5000 rows)")
 
 # Show results
 if st.session_state.df is not None:
@@ -57,7 +57,7 @@ if st.session_state.df is not None:
 else:
     st.info("Click Generate or upload CSV to start!")
 
-# 💰 Business Impact - visible immediately (you will see real numbers)
+# Business Impact + PDF button (now stays forever after detection)
 if st.session_state.df is not None and 'fraud_score' in st.session_state.df.columns:
     df = st.session_state.df
     amount_col = 'amount_JOD' if 'amount_JOD' in df.columns else 'Amount'
@@ -72,7 +72,7 @@ if st.session_state.df is not None and 'fraud_score' in st.session_state.df.colu
         caught_cases = int(mask.sum())
         recall = (caught_cases / total_frauds * 100) if total_frauds > 0 else 0.0
     
-    st.subheader("💰 Business Impact on your uploaded data")
+    st.subheader("Business Impact on your uploaded data")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("Prevented Fraud", f"{prevented_amount:,.0f} JOD")
@@ -83,7 +83,7 @@ if st.session_state.df is not None and 'fraud_score' in st.session_state.df.colu
     
     if st.button("3. Generate Executive Business Impact Report (PDF)"):
         pdf_bytes = generate_report(st.session_state.df)
-        st.success("✅ PDF Executive Report created in memory!")
+        st.success("PDF Executive Report created!")
         st.download_button(
             label="📥 Download Aman_Bank_Impact_Report.pdf",
             data=pdf_bytes,
