@@ -2,10 +2,9 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-import shap
 
 def detect_fraud(df):
-    np.random.seed(42)  # ← results now identical every run
+    np.random.seed(42)  # keeps results identical every run
     
     # Auto-fix for raw Kaggle creditcard.csv
     if 'type' not in df.columns:
@@ -31,14 +30,10 @@ def detect_fraud(df):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
-    # 🔥 NOW DATA-DRIVEN (no forced 5%)
+    # 🔥 Real data-driven detection (no forced 5%)
     model = IsolationForest(random_state=42, n_estimators=200)
     model.fit(X_scaled)
     df['anomaly_score'] = model.decision_function(X_scaled)
-    df['fraud_score'] = (df['anomaly_score'] < 0).astype(int)  # real outlier logic
-    
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(X_scaled)
-    df['shap_amount'] = shap_values[:, 0]
+    df['fraud_score'] = (df['anomaly_score'] < 0).astype(int)
     
     return df
