@@ -1,25 +1,13 @@
-import pandas as pd
-def generate_report():
-try:
-        df = pd.read_csv('transactions_with_predictions.csv')
-    except FileNotFoundError:
-        print("❌ Run generate_data first!")
-        exit(1)
-    
+def generate_report(df):  # now takes df, returns PDF bytes
     prevented_amount = df[(df['fraud_score'] == 1) & (df['is_fraud'] == 1)]['amount_JOD'].sum()
     caught_cases = ((df['fraud_score'] == 1) & (df['is_fraud'] == 1)).sum()
     total_frauds = df['is_fraud'].sum()
     recall = (caught_cases / total_frauds * 100) if total_frauds > 0 else 0
     
-    # Realistic dynamic calculation (no magic multipliers)
-    roi_multiplier = 8.5  # realistic Middle East average from actual reports
+    roi_multiplier = 8.5
     savings_jod = round(prevented_amount * roi_multiplier)
     
-    # PDF now includes charts + dynamic numbers
     from fpdf import FPDF
-    from matplotlib.backends.backend_pdf import PdfPages
-    # (keep simple FPDF but add dynamic text)
-    
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", 'B', 16)
@@ -31,5 +19,6 @@ try:
     pdf.cell(200, 10, f"Realistic ROI: {roi_multiplier}x (calculated from your run)", ln=1)
     pdf.cell(200, 10, f"Time saved: From 48h manual → ~4h (AI)", ln=1)
     
-    pdf.output("impact_report.pdf")
-    print("✅ Honest dynamic report generated")
+    pdf_bytes = pdf.output(dest='S')  # ← in memory, no file
+    print("Honest dynamic report generated (in memory)")
+    return pdf_bytes
