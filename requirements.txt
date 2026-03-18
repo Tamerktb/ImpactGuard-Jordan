@@ -3,8 +3,4 @@ scikit-learn==1.5.2
 numpy==2.1.2
 fpdf==1.7.2
 streamlit==1.40.0
-matplotlib
-plotly
-seaborn
-pillow
-joblib
+matplotlib==3.9.2
