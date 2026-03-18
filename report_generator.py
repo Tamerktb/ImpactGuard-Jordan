@@ -1,3 +1,4 @@
+import pandas as pd
 def generate_report():
     df = pd.read_csv('transactions_with_predictions.csv')
     
