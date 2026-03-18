@@ -5,6 +5,9 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 import shap
 
 def detect_fraud(df):
+    # Make results identical every run
+    np.random.seed(42)
+    
     # Auto-fix for raw Kaggle creditcard.csv
     if 'type' not in df.columns:
         if len(df) > 5000:
