@@ -1,3 +1,6 @@
+# Huge Kaggle file - NEVER upload
+creditcard.csv
+
 __pycache__/
 *.pyc
 .env
@@ -6,5 +9,6 @@ __pycache__/
 transactions_with_predictions.csv
 impact_report.pdf
 venv/
+
 # Synthetic data – generated automatically every time you run the app
 transactions.csv
