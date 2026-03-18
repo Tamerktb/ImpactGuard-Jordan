@@ -2,28 +2,30 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
-def generate_data():
-    n = 5000
-    dates = [datetime(2024, 1, 1) + timedelta(days=i % 365) for i in range(n)]
+def generate_jordan_data():
+    # Load real fraud data
+    df = pd.read_csv('creditcard.csv')
+    df = df.sample(5000, random_state=42)  # keep demo size
     
-    # Normal transactions
-    amounts = np.random.lognormal(5, 1, n)
-    types = np.random.choice(['online', 'pos', 'atm'], n)
-    merchants = np.random.choice(['Amazon', 'Carrefour', 'Zain', 'Aman Bank', 'Other'], n)
-    is_fraud = np.random.choice([0, 1], n, p=[0.95, 0.05])
+    # Jordanify it
+    df.rename(columns={'Amount': 'amount_JOD'}, inplace=True)
+    df['amount_JOD'] = df['amount_JOD'] * 0.71  # rough EUR→JOD conversion
     
-    # 🔥 REALISTIC FRAUD: make fraud cases have MUCH higher amounts (outliers)
-    amounts = np.where(is_fraud == 1, amounts * np.random.uniform(8, 15), amounts)
+    # Add Jordan-specific columns
+    types = np.random.choice(['online', 'POS', 'ATM', 'mobile_money'], len(df))
+    merchants = np.random.choice([
+        'Zain', 'Orange', 'Umniah', 'Carrefour Jordan', 'Amazon.ae', 
+        'Jordan Post', 'Citi Bank ATM', 'Hawala Transfer', 'Local Shop'
+    ], len(df))
+    hours = np.random.randint(0, 24, len(df))
     
-    df = pd.DataFrame({
-        'date': dates,
-        'amount_JOD': amounts,
-        'type': types,
-        'merchant': merchants,
-        'is_fraud': is_fraud
-    })
+    df['type'] = types
+    df['merchant'] = merchants
+    df['hour'] = hours
+    df['is_fraud'] = df['Class']  # real labels
+    
     df.to_csv('transactions.csv', index=False)
-    print("✅ Generated 5,000 truly fresh transactions with realistic fraud outliers")
-
+    print("✅ Generated 5,000 REAL fraud transactions (Kaggle) with Jordan flavor")
+    
 if __name__ == "__main__":
-    generate_data()
+    generate_jordan_data()
