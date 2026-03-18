@@ -1,54 +1,40 @@
-"""
-ImpactGuard Jordan - AI Fraud Detection Engine
-Uses Isolation Forest (unsupervised) — exactly what Jordan banks use.
-"""
-
 import pandas as pd
 from sklearn.ensemble import IsolationForest
-from sklearn.preprocessing import LabelEncoder, StandardScaler   # ← ADD StandardScaler
-import numpy as np
-
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+import shap  # ← new
+import joblib
 
 def detect_fraud():
     df = pd.read_csv('transactions.csv')
     
-    # Encode categoricals (unchanged)
+    # More features (real banks use 20+)
     le_type = LabelEncoder()
     le_merch = LabelEncoder()
     df['type_enc'] = le_type.fit_transform(df['type'])
     df['merchant_enc'] = le_merch.fit_transform(df['merchant'])
     
-    # ←←← THIS IS THE IMPORTANT PART ←←←
-    X = df[['amount_JOD', 'type_enc', 'merchant_enc']]
+    X = df[['amount_JOD', 'type_enc', 'merchant_enc', 'hour']]  # ← added hour
     
-    # NEW: Scale all features to same range
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
-    # Fixed parameters = reproducible results
-    contamination = 0.05                     # exactly 5% like real banks
-    model = IsolationForest(
-        contamination=contamination, 
-        random_state=42,                     # ← fixed seed
-        n_estimators=100,                    # optional but nice
-        max_samples='auto'
-    )
-    
+    model = IsolationForest(contamination=0.05, random_state=42, n_estimators=200)
     df['fraud_score'] = (model.fit_predict(X_scaled) == -1).astype(int)
     
-    # Save + metrics (exactly as before)
+    # SHAP explanations (banks LOVE this)
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X_scaled)
+    df['shap_amount'] = shap_values[:, 0]  # example
+    
+    # Save model for "production" feel
+    joblib.dump(model, 'fraud_model.joblib')
+    
+    # Proper metrics (precision + recall)
+    caught = ((df['fraud_score'] == 1) & (df['is_fraud'] == 1)).sum()
+    precision = caught / df['fraud_score'].sum() if df['fraud_score'].sum() > 0 else 0
+    recall = caught / df['is_fraud'].sum() if df['is_fraud'].sum() > 0 else 0
+    
+    print(f"Precision: {precision:.1%} | Recall: {recall:.1%}")
+    
     df.to_csv('transactions_with_predictions.csv', index=False)
-    
-    true_frauds = df['is_fraud'].sum()
-    ai_cases = df['fraud_score'].sum()
-    caught = (df['is_fraud'] & df['fraud_score']).sum()
-    recall = (caught / true_frauds * 100) if true_frauds > 0 else 0
-    
-    print(f"✅ Fraud detection complete!")
-    print(f"   AI flagged: {ai_cases} cases ({ai_cases/len(df)*100:.2f}%)")
-    print(f"   True frauds: {true_frauds} | Recall: {recall:.1f}%")
     return df
-
-
-if __name__ == "__main__":
-    detect_fraud()
