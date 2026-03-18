@@ -7,12 +7,6 @@
 **AI fraud detection dashboard built for Jordanian banks (Amman)**  
 Live demo + Executive PDF report included.
 
-## Business Impact
-- **Example run (varies with data) — see PDF download**
-- **Detection rate**: 4.5–5.5% (realistic Jordan bank fraud volume)
-- **ROI**: 12x in first year
-- **Time saved**: From 48 hours manual review → under 4 hours with AI
-- Full PDF executive report attached (ready for SOC/Leadership)
 
 **Live Demo**: https://tamerktb-impactguard-jordan-app-gdquxu.streamlit.app
 
@@ -27,13 +21,20 @@ Live demo + Executive PDF report included.
 - **Why Isolation Forest?** Unsupervised — banks don’t have perfect labels.  
 - **Realistic data**: 5,000 transactions with 5% natural fraud rate (online/POS/ATM).
 
-**How to Run (exact steps)**  
-1. Open cmd / terminal in the project folder  
-2. `pip install -r requirements.txt`  
+**How to Run (exact steps)**
+1. Open terminal in the project folder
+2. `pip install -r requirements.txt`
 3. `streamlit run app.py`
 
-**Folder Structure**  
-- All data now runs **in memory** (no global files are created/overwritten)
+**Folder Structure**
+- Everything runs **in memory only** (no files created/overwritten — safe & clean)
+- `screenshots/` — dashboard images
+- `aman_bank_logo.png` — used in PDF report
+
+**Business Impact** (updated to match code)
+- Detection rate: ~4-6% (realistic, data-driven)
+- ROI: **8.5x** in first year
+- Time saved: 48h manual → under 4h with AI
 
 Built for Cybersecurity / Fraud Analyst / SOC roles in Jordan 🇯🇴  
 Open to opportunities in Amman
