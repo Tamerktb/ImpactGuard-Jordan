@@ -35,9 +35,13 @@ if st.button("2. Run AI Fraud Detection") and st.session_state.step >= 1:
 # Show results only after detection
 try:
     df = pd.read_csv('transactions_with_predictions.csv')
-except:
-    st.warning("👆 Click the buttons above first (or upload real CSV)")
+except FileNotFoundError:
+    st.error("❌ Run generate_data first! (or click button 1 then 2)")
     st.stop()
+except Exception as e:          # keep other errors visible
+    st.error(f"Unexpected error: {e}")
+    st.stop()
+
 
 col1, col2 = st.columns(2)
 with col1:
