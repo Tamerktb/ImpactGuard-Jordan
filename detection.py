@@ -5,7 +5,11 @@ import shap  # ← new
 import joblib
 
 def detect_fraud():
-    df = pd.read_csv('transactions.csv')
+try:
+        df = pd.read_csv('transactions.csv')
+    except FileNotFoundError:
+        print("❌ Run generate_data first!")
+        exit(1)
     
     # More features (real banks use 20+)
     le_type = LabelEncoder()
