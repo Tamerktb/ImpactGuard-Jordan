@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 def generate_data():
+    np.random.seed(42)   # ← added for same results every time
     n = 5000
     data = {
         'amount_JOD': np.random.lognormal(mean=5, sigma=1.5, size=n) * 0.71,
