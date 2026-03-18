@@ -19,14 +19,33 @@ def generate_report(df):
     from fpdf import FPDF
     pdf = FPDF()
     pdf.add_page()
+    
+    # Logo + Professional Header
+    pdf.image('screenshots/aman_bank_logo.png', x=10, y=8, w=50)  # ← your logo
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, "ImpactGuard Jordan - Aman Bank Fraud Report", ln=1, align='C')
+    pdf.ln(10)
+    
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, f"Prevented Fraud: {prevented_amount:,.0f} JOD", ln=1)
-    pdf.cell(200, 10, f"Recall: {recall:.1f}%", ln=1)
+    pdf.cell(200, 10, f"AI Recall (real frauds caught): {recall:.1f}%", ln=1)
     pdf.cell(200, 10, f"Realistic ROI: {roi_multiplier}x (savings {savings_jod:,} JOD)", ln=1)
-    pdf.cell(200, 10, "Time saved: 48h manual to ~4h AI", ln=1)   # ← FIXED: no arrow
+    pdf.cell(200, 10, "Time saved: 48h manual → ~4h AI", ln=1)
+    pdf.cell(200, 10, f"Transactions analyzed: {len(df):,}", ln=1)
+    pdf.cell(200, 10, "Fraud flagged based on your data patterns (amount, time, merchant)", ln=1)
     
+    # Simple chart-like summary
+    pdf.ln(10)
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(200, 10, "Business Impact Summary", ln=1)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, f"• Flagged cases: {df['fraud_score'].sum():,} ({df['fraud_score'].mean()*100:.1f}%)", ln=1)
+    pdf.cell(200, 10, f"• Real frauds in your data: {total_frauds:,}", ln=1)
+    
+    # Fix empty/corrupted PDF
     pdf_bytes = pdf.output(dest='S')
-    print(f"✅ PDF generated | Prevented: {prevented_amount:,.0f} JOD | Recall: {recall:.1f}%")
+    if isinstance(pdf_bytes, str):
+        pdf_bytes = pdf_bytes.encode("latin-1")
+    
+    print(f"✅ Professional PDF generated | Prevented: {prevented_amount:,.0f} JOD | Recall: {recall:.1f}%")
     return pdf_bytes
