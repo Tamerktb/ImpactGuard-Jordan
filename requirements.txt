@@ -3,6 +3,4 @@ scikit-learn==1.5.2
 numpy==2.1.2
 fpdf==1.7.2
 streamlit==1.40.0
-shap==0.46.0
-joblib
 matplotlib
