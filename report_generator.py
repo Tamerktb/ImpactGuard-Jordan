@@ -1,4 +1,5 @@
 import pandas as pd
+from fpdf import FPDF
 
 def generate_report(df):
     amount_col = 'amount_JOD' if 'amount_JOD' in df.columns else 'Amount'
@@ -16,12 +17,12 @@ def generate_report(df):
     roi_multiplier = 8.5
     savings_jod = round(prevented_amount * roi_multiplier)
     
-    from fpdf import FPDF
+   
     pdf = FPDF()
     pdf.add_page()
     
     # Logo + Professional Header
-    pdf.image('screenshots/aman_bank_logo.png', x=10, y=8, w=50)  # ← your logo
+    pdf.image('aman_bank_logo.png', x=10, y=8, w=50)   # ← fixed path
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, "ImpactGuard Jordan - Aman Bank Fraud Report", ln=1, align='C')
     pdf.ln(10)
