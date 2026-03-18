@@ -28,10 +28,9 @@ Live demo + Executive PDF report included.
 - **Realistic data**: 5,000 transactions with 5% natural fraud rate (online/POS/ATM).
 
 **How to Run (exact steps)**  
-1. Open cmd in the project folder  
+1. Open cmd / terminal in the project folder  
 2. `pip install -r requirements.txt`  
-3. `python -m streamlit run app.py`  
-4. Click buttons in the Streamlit dashboard (Generate → Detect → Report)
+3. `streamlit run app.py`
 
 **Folder Structure**  
 - All data now runs **in memory** (no global files are created/overwritten)
