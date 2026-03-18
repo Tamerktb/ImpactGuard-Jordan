@@ -4,12 +4,12 @@ from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 def detect_fraud(df):
-    np.random.seed(42)  # keeps results identical every run
+    np.random.seed(42)
     
-    # Auto-fix for raw Kaggle creditcard.csv
+    # Auto-fix for huge Kaggle creditcard.csv (143MB)
     if 'type' not in df.columns:
         if len(df) > 5000:
-            df = df.sample(5000, random_state=42).copy()
+            df = df.sample(5000, random_state=42).copy()   # ← prevents memory explosion
         if 'Amount' in df.columns:
             df.rename(columns={'Amount': 'amount_JOD'}, inplace=True)
             df['amount_JOD'] = df['amount_JOD'] * 0.71
@@ -30,7 +30,6 @@ def detect_fraud(df):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
-    # 🔥 Real data-driven detection (no forced 5%)
     model = IsolationForest(random_state=42, n_estimators=200)
     model.fit(X_scaled)
     df['anomaly_score'] = model.decision_function(X_scaled)
