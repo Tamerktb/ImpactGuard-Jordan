@@ -46,11 +46,16 @@ if st.session_state.df is not None:
         st.metric("Fraud Detection Rate", f"{fraud_rate:.2f}%", 
                   delta=f"{df.get('fraud_score', pd.Series([0])).sum()} cases")
 
-    st.subheader("Amount Distribution (JOD)")
+      st.subheader("Amount Distribution (JOD)")
     fig, ax = plt.subplots()
-    if 'amount_JOD' in df.columns:
-        df['amount_JOD'].hist(bins=50, ax=ax, color="#00cc66")
+    amount_col = 'amount_JOD' if 'amount_JOD' in df.columns else 'Amount' if 'Amount' in df.columns else None
+    if amount_col:
+        df[amount_col].hist(bins=50, ax=ax, color="#00cc66")
+        ax.set_xlabel("Amount (JOD)")
+    else:
+        ax.text(0.5, 0.5, "No amount column", ha='center', va='center')
     st.pyplot(fig)
+    
 else:
     st.warning("Click Generate or upload CSV to start!")
 
