@@ -1,5 +1,5 @@
 import pandas as pd
-from fpdf import FPDF   # ← moved to top (professional)
+from fpdf import FPDF
 
 def generate_report(df):
     amount_col = 'amount_JOD' if 'amount_JOD' in df.columns else 'Amount'
@@ -20,17 +20,18 @@ def generate_report(df):
     pdf = FPDF()
     pdf.add_page()
     
-    # NO LOGO for now (yours is corrupted)
+    # Clean professional header (no broken logo, no Unicode arrow)
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, "ImpactGuard Jordan - Aman Bank Fraud Report", ln=1, align='C')
-    pdf.ln(20)
+    pdf.ln(15)
     
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, f"Prevented Fraud: {prevented_amount:,.0f} JOD", ln=1)
     pdf.cell(200, 10, f"AI Recall (real frauds caught): {recall:.1f}%", ln=1)
     pdf.cell(200, 10, f"Realistic ROI: {roi_multiplier}x (savings {savings_jod:,} JOD)", ln=1)
-    pdf.cell(200, 10, "Time saved: 48h manual → ~4h AI", ln=1)
+    pdf.cell(200, 10, "Time saved: 48h manual to ~4h AI", ln=1)   # ← arrow removed
     pdf.cell(200, 10, f"Transactions analyzed: {len(df):,}", ln=1)
+    pdf.cell(200, 10, "Fraud flagged based on your data patterns (amount, time, merchant)", ln=1)
     
     pdf.ln(10)
     pdf.set_font("Arial", 'B', 14)
@@ -43,5 +44,5 @@ def generate_report(df):
     if isinstance(pdf_bytes, str):
         pdf_bytes = pdf_bytes.encode("latin-1")
     
-    print(f"✅ PDF generated | Prevented: {prevented_amount:,.0f} JOD | Recall: {recall:.1f}%")
+    print(f"✅ PDF generated successfully | Prevented: {prevented_amount:,.0f} JOD | Recall: {recall:.1f}%")
     return pdf_bytes
