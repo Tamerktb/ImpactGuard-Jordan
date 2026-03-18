@@ -1,6 +1,10 @@
 import pandas as pd
 def generate_report():
-    df = pd.read_csv('transactions_with_predictions.csv')
+try:
+        df = pd.read_csv('transactions_with_predictions.csv')
+    except FileNotFoundError:
+        print("❌ Run generate_data first!")
+        exit(1)
     
     prevented_amount = df[(df['fraud_score'] == 1) & (df['is_fraud'] == 1)]['amount_JOD'].sum()
     caught_cases = ((df['fraud_score'] == 1) & (df['is_fraud'] == 1)).sum()
