@@ -2,7 +2,7 @@
 
 > **DISCLAIMER**  
 > This is a **portfolio demonstration** using public Kaggle data.  
-> **Not for production use.** Never upload real customer/bank data.
+> **Not for production use.
 
 **AI fraud detection dashboard built for Jordanian banks (Amman)**  
 Live demo + Executive PDF report included.
