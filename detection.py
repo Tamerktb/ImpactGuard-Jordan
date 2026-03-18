@@ -5,24 +5,21 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 import shap
 
 def detect_fraud(df):
-    # 🔥 AUTO-FIX: Raw Kaggle upload? Add Jordan columns silently
+    # Auto-fix for raw Kaggle creditcard.csv
     if 'type' not in df.columns:
         if len(df) > 5000:
             df = df.sample(5000, random_state=42).copy()
-        
         if 'Amount' in df.columns:
             df.rename(columns={'Amount': 'amount_JOD'}, inplace=True)
             df['amount_JOD'] = df['amount_JOD'] * 0.71
-        
         df['type'] = np.random.choice(['online', 'POS', 'ATM', 'mobile_money'], len(df))
         df['merchant'] = np.random.choice([
             'Zain', 'Orange', 'Umniah', 'Carrefour Jordan', 'Amazon.ae', 
             'Jordan Post', 'Citi Bank ATM', 'Hawala Transfer', 'Local Shop'
         ], len(df))
         df['hour'] = np.random.randint(0, 24, len(df))
-        df['is_fraud'] = df['Class'] if 'Class' in df.columns else 0
+        df['is_fraud'] = df.get('Class', 0)
 
-    # Original detection (unchanged)
     le_type = LabelEncoder()
     le_merch = LabelEncoder()
     df['type_enc'] = le_type.fit_transform(df['type'])
@@ -38,10 +35,5 @@ def detect_fraud(df):
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(X_scaled)
     df['shap_amount'] = shap_values[:, 0]
-    
-    caught = ((df['fraud_score'] == 1) & (df['is_fraud'] == 1)).sum()
-    precision = caught / df['fraud_score'].sum() if df['fraud_score'].sum() > 0 else 0
-    recall = caught / df['is_fraud'].sum() if df['is_fraud'].sum() > 0 else 0
-    print(f"Precision: {precision:.1%} | Recall: {recall:.1%}")
     
     return df
